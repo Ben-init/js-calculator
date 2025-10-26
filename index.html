@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pathway+Gothic+One&display=swap" rel="stylesheet">
+    <title>Calculator</title>
+    <style>
+        
+        * {
+            box-sizing: border-box; 
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Pathway Gothic One', sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .main {
+            width: 300px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .result {
+            width: 100%;
+            height: 100px;
+            background-color: #222;
+            color: white;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: flex-end;
+        }
+
+        .resultText {
+            text-align: right;
+            margin: 0;
+            width: 100%;
+            max-width: 100%;
+            white-space: nowrap;
+            overflow-x: auto;
+            overflow-y: hidden;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+            font-size: 55px;
+        }
+
+        .resultText::-webkit-scrollbar {
+            display: none;
+        }
+
+        .btns {
+            width: 100%;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1px;
+            background-color: #ccc;
+        }
+
+        .btns button {
+            height: 65px;
+            font-family: 'Pathway Gothic One', sans-serif;
+            font-size: 24px;
+            border: none;
+            cursor: pointer;
+            outline: none;
+            width: 100%;
+        }
+
+        [data-type="number"] {
+            background-color: #F0F0F0;
+        }
+
+        [data-type="operator"] {
+            background-color: #FF9500;
+            color: white;
+        }
+
+        [data-type="equals"] {
+            background-color: #4CD964;
+            color: white;
+            font-weight: bold;
+        }
+
+        [data-type="clear"] {
+            background-color: #D3D3D3;
+            grid-column: span 3;
+        }
+
+        [data-type="delete"] {
+            background-color: #D3D3D3;
+            color: #444; 
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .btns button:active {
+            filter: brightness(0.8);
+        }
+    </style>
+</head>
+<body>
+    <div class="main">
+        <div class="result">
+            <p class="resultText" id="result">0</p>
+        </div>
+        <div id="keypad" class="btns">
+            <button data-type="clear" id="btnClear">AC</button>
+            <button data-value="del" data-type="delete" id="btnDelete" class="delete-char">⌫</button>
+            <button data-value="9" data-type="number" id="btnNine">9</button>
+            <button data-value="8" data-type="number" id="btnEight">8</button>
+            <button data-value="7" data-type="number" id="btnSeven">7</button>
+            <button data-value="/" data-type="operator" id="btnDivide">/</button>
+            <button data-value="6" data-type="number" id="btnSix">6</button>
+            <button data-value="5" data-type="number" id="btnFive">5</button>
+            <button data-value="4" data-type="number" id="btnFour">4</button>
+            <button data-value="*" data-type="operator" id="btnMultiply">x</button> 
+            <button data-value="3" data-type="number" id="btnThree">3</button>
+            <button data-value="2" data-type="number" id="btnTwo">2</button>
+            <button data-value="1" data-type="number" id="btnOne">1</button>
+            <button data-value="-" data-type="operator" id="btnSubtract">-</button>
+            <button data-value="." data-type="number" id="btnDecimal">.</button>
+            <button data-value="0" data-type="number" id="btnZero">0</button>
+            <button data-type="equals" id="btnEquals">=</button>
+            <button data-value="+" data-type="operator" id="btnPlus">+</button>
+
+        </div> 
+    </div>
+    <script src="main.js"></script>
+</body>
+</html>
