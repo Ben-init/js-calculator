@@ -40,11 +40,15 @@ function handleUserInput(value) {
     let isInputOperator = identifyOperator(value)[1];
 
     if (isInputOperator) {
+        if (isResultDisplayed) {
+            isResultDisplayed = false; 
+        }
         let isSuccessful = handleOperatorInput(value, mainExpression);
         //funcion pendiente para avisar al usuario que la entrada es invalida
         //'isSuccessful' retorna true en caso de haberse concretado o false si no
         //if (!isSuccessful) console.log('invalid input');
     } else {
+        resetOnNewInput();
         let isSuccessful = handleNumberInput(value, mainExpression);
         //funcion pendiente para avisar al usuario que la entrada es invalida 
         //'isSuccessful' retorna true en caso de haberse concretado o false si no
@@ -93,6 +97,13 @@ function formatExpressionForDisplay(tokens) {
     const finalDisplay = displayString.replace(/\*/g, 'x');
 
     return finalDisplay;
+}
+
+function resetOnNewInput() {
+    if (isResultDisplayed) {
+        mainExpression = []; 
+        isResultDisplayed = false; 
+    }
 }
 
 function evaluateExpression() {
