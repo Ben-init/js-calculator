@@ -3,7 +3,7 @@ const keypad = document.getElementById('keypad');
 
 let mainExpression = [];
 let isOperator = false;
-
+let isResultDisplayed = false;
 
 keypad.addEventListener('click', (event) => {
     const target = event.target;
@@ -27,7 +27,7 @@ keypad.addEventListener('click', (event) => {
             break;
         
         case 'equals':
-            updateDisplay();
+            evaluateExpression();
             break;
 
         case 'delete':
@@ -95,17 +95,30 @@ function formatExpressionForDisplay(tokens) {
     return finalDisplay;
 }
 
-function updateDisplay(data) {
-    if (!mainExpression.length && !data) {
-        data = '0';
+function evaluateExpression() {
+    if(isOperator) {
+        updateDisplay('Error');
+        return;
     }
 
-    const contentToDisplay = data ? data: processByPrecedence(mainExpression);
-    resultMain.textContent = contentToDisplay;
+    if (!mainExpression.length) {
+        updateDisplay('0');
+        return;
+    }
+    
+    const finalResult = processByPrecedence(mainExpression);
+    mainExpression = [finalResult.toString()];
+    isOperator = false;
+    isResultDisplayed = true;
+    updateDisplay(finalResult.toString());
+}
+
+function updateDisplay(data) {
+    resultMain.textContent = data;
 }
 
 function clearAll() {
-    resultMain.textContent = '0'
+    updateDisplay('0');
     mainExpression = [];
     isOperator = false;
 }
