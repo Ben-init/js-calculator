@@ -136,12 +136,15 @@ function clearAll() {
 
 function handleOperatorInput(operator, expressionArray) {
     let expressionLength = expressionArray.length;
-    let negativeChecker = isNegativeSign(operator);
+    let initialChecker = isInitialSign(operator);
 
     if (isOperator && expressionLength) {
+        if (!initialChecker && expressionLength == 1) {
+            return false;
+        }    
         expressionArray.pop();
         expressionArray.push(operator);
-    } else if (negativeChecker && !expressionLength){
+    } else if (initialChecker && !expressionLength){
         expressionArray.push(operator);
     } else if (expressionLength) {
         expressionArray.push(operator);
@@ -154,8 +157,8 @@ function handleOperatorInput(operator, expressionArray) {
     return true;
 }
 
-function isNegativeSign(operator) {
-    return (operator === '-')? true: false;
+function isInitialSign(operator) {
+    return operator === '+' || operator === '-';
 }
 
 function handleNumberInput(number, expressionArray) {
