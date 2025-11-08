@@ -9,6 +9,7 @@ keypad.addEventListener('click', (event) => {
     const target = event.target;
 
     if (target.tagName != 'BUTTON') {
+        
         return;
     }
 
@@ -37,7 +38,7 @@ keypad.addEventListener('click', (event) => {
 });
 
 function handleUserInput(value) {
-    let isInputOperator = identifyOperator(value)[1];
+    const isInputOperator = identifyOperator(value)[1];
     let isSuccessful = false;
 
     if (isInputOperator) {
@@ -52,6 +53,7 @@ function handleUserInput(value) {
 
     if (!isSuccessful) {
         updateDisplay('Invalid input');
+
         return;
     }
 
@@ -109,11 +111,13 @@ function resetOnNewInput() {
 function evaluateExpression() {
     if(isOperator) {
         updateDisplay('Error');
+
         return;
     }
 
     if (!mainExpression.length) {
         updateDisplay('0');
+
         return;
     }
     
@@ -135,11 +139,12 @@ function clearAll() {
 }
 
 function handleOperatorInput(operator, expressionArray) {
+    const initialChecker = isInitialSign(operator);
     let expressionLength = expressionArray.length;
-    let initialChecker = isInitialSign(operator);
 
     if (isOperator && expressionLength) {
         if (!initialChecker && expressionLength == 1) {
+
             return false;
         }    
         expressionArray.pop();
@@ -149,6 +154,7 @@ function handleOperatorInput(operator, expressionArray) {
     } else if (expressionLength) {
         expressionArray.push(operator);
     } else {
+
         return false;
     }
 
@@ -162,7 +168,7 @@ function isInitialSign(operator) {
 }
 
 function handleNumberInput(number, expressionArray) {
-    let expressionLength = expressionArray.length;
+    const expressionLength = expressionArray.length;
 
     if (!expressionLength) {
         expressionArray.push(number);
@@ -173,6 +179,7 @@ function handleNumberInput(number, expressionArray) {
     } else if (isOperator && expressionLength === 1) {
         appendDigit(expressionArray, number);
     } else {
+
         return false;
     }
 
