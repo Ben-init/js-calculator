@@ -38,21 +38,21 @@ keypad.addEventListener('click', (event) => {
 
 function handleUserInput(value) {
     let isInputOperator = identifyOperator(value)[1];
+    let isSuccessful = false;
 
     if (isInputOperator) {
         if (isResultDisplayed) {
             isResultDisplayed = false; 
         }
-        let isSuccessful = handleOperatorInput(value, mainExpression);
-        //funcion pendiente para avisar al usuario que la entrada es invalida
-        //'isSuccessful' retorna true en caso de haberse concretado o false si no
-        //if (!isSuccessful) console.log('invalid input');
+        isSuccessful = handleOperatorInput(value, mainExpression);
     } else {
         resetOnNewInput();
-        let isSuccessful = handleNumberInput(value, mainExpression);
-        //funcion pendiente para avisar al usuario que la entrada es invalida 
-        //'isSuccessful' retorna true en caso de haberse concretado o false si no
-        //if (!isSuccessful) console.log('invalid input');
+        isSuccessful = handleNumberInput(value, mainExpression);
+    }
+
+    if (!isSuccessful) {
+        updateDisplay('Invalid input');
+        return;
     }
 
     const displayValue = formatExpressionForDisplay(mainExpression);
