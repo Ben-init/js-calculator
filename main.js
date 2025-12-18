@@ -96,9 +96,8 @@ function handleDeleteInput() {
 
 function formatExpressionForDisplay(tokens) {
     const displayString = tokens.join(' ');
-    const finalDisplay = displayString.replace(/\*/g, 'x');
 
-    return finalDisplay;
+    return displayString;
 }
 
 function resetOnNewInput() {
@@ -224,7 +223,7 @@ function calculate(operacion, a, b) {
         case '**':
             return a ** b;
 
-        case '*':
+        case 'x':
             return a * b;
 
         case '/':
@@ -244,7 +243,7 @@ function identifyOperator(operator) {
             case '//':
                 return [3, true];
 
-            case '*':
+            case 'x':
             case '/':
                 return [2, true];
 
