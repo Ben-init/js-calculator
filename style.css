@@ -1,0 +1,143 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: #e0e0e0; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    font-family: 'Pathway Gothic One', sans-serif;
+}
+
+.main {
+    width: 310px;
+    background: #d1d1d1; 
+    border-radius: 24px;
+    padding: 25px;
+    box-shadow: 
+        20px 20px 60px #bebebe,
+        -20px -20px 60px #ffffff,
+        inset 3px 3px 10px #ffffff,
+        inset -3px -3px 10px #b1b1b1;
+    border: 1px solid #c5c5c5;
+}
+
+.display-container {
+    background-color: #0b1a0e; 
+    border-radius: 12px;
+    padding: 10px 15px;
+    margin-bottom: 15px;
+    text-align: right;
+    height: 75px; 
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border: 2px solid #222;
+    box-shadow: inset 0 0 10px #000;
+}
+
+.history-text {
+    color: rgba(0, 255, 65, 0.25);
+    font-size: 0.9rem;
+    margin-bottom: -2px;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.result-text {
+    color: #00ff41;
+    font-size: 2.4rem;
+    text-shadow: 0 0 8px rgba(0, 255, 65, 0.5);
+    letter-spacing: 1px;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.correction-layer {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    margin-bottom: 10px;
+}
+
+.btn-del {
+    grid-column: 4;
+    background-color: #f0f0f0;
+    border: none;
+    border-radius: 8px;
+    color: #888;
+    font-size: 1.1rem;
+    height: 35px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    box-shadow: 3px 3px 6px #b1b1b1, -3px -3px 6px #ffffff;
+}
+
+.btn-del:active {
+    box-shadow: inset 2px 2px 5px #b1b1b1, inset -1px -1px 3px #ffffff;
+    transform: scale(0.95);
+    color: #ff3b30;
+}
+
+.btn-del:hover {
+    color: #ff3b30;
+}
+
+.btns {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+}
+
+button {
+    height: 54px;
+    border: none;
+    border-radius: 14px;
+    font-size: 1.3rem;
+    font-family: 'Pathway Gothic One', sans-serif;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    box-shadow: 4px 4px 8px #b1b1b1, -4px -4px 8px #ffffff;
+}
+
+[data-type="number"]:active {
+    box-shadow: inset 2px 2px 5px #b1b1b1, inset -2px -2px 5px #ffffff;
+    transform: scale(0.97);
+}
+
+.btn-op:active, 
+.btn-func:active, 
+.btn-clear:active, 
+.btn-equals:active {
+    box-shadow: inset 3px 3px 6px rgba(0, 0, 0, 0.45), 
+                inset -1px -1px 3px rgba(255, 255, 255, 0.05);
+    transform: scale(0.97);
+    filter: brightness(0.85);
+}
+
+[data-type="number"] {
+    background-color: #f0f0f0;
+    color: #444;
+}
+
+.btn-op, .btn-func {
+    background-color: #3a4750; 
+    color: #eee;
+}
+
+.btn-clear {
+    background-color: #2c3e50;
+    color: #fff;
+}
+
+.btn-equals {
+    background-color: #014b9b; 
+    color: white;
+}
+
+::-webkit-scrollbar {
+    display: none;
+}
