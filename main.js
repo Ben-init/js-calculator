@@ -226,7 +226,7 @@ function calculate(operacion, a, b) {
         case 'x':
             return a * b;
 
-        case '/':
+        case '÷':
             return a / b;
 
         case '+':
@@ -244,7 +244,7 @@ function identifyOperator(operator) {
                 return [3, true];
 
             case 'x':
-            case '/':
+            case '÷':
                 return [2, true];
 
             case '+': 
