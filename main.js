@@ -223,6 +223,9 @@ function calculate(operacion, a, b) {
         case '**':
             return a ** b;
 
+        case '//':
+            return Math.sqrt(b);
+
         case 'x':
             return a * b;
 
