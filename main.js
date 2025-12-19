@@ -2,7 +2,7 @@ const resultMain = document.getElementById('result');
 const keypad = document.getElementById('keypad');
 
 let mainExpression = [];
-let isOperator = false;
+let lastInputWasOperator = false;
 let isResultDisplayed = false;
 
 keypad.addEventListener('click', (event) => {
@@ -38,10 +38,10 @@ keypad.addEventListener('click', (event) => {
 });
 
 function handleUserInput(value) {
-    const isInputOperator = identifyOperator(value)[1];
+    const tokenMetadata = getTokenMetadata(value);
     let isSuccessful = false;
 
-    if (isInputOperator) {
+    if (tokenMetadata.isOperator) {
         if (isResultDisplayed) {
             isResultDisplayed = false; 
         }
@@ -72,7 +72,7 @@ function handleDeleteInput() {
     let lastIndex = mainExpression.length - 1;
     let lastElement = mainExpression[lastIndex];
 
-    if (isOperator) {
+    if (lastInputWasOperator) {
         mainExpression.pop();
     } else {
         if (lastElement.length === 1) {
@@ -89,9 +89,9 @@ function handleDeleteInput() {
     }
     
     lastIndex = mainExpression.length - 1;
-    let operatorInfo = identifyOperator(mainExpression[lastIndex]);
+    let tokenMetadata = getTokenMetadata(mainExpression[lastIndex]);
 
-    isOperator = operatorInfo[1];
+    lastInputWasOperator = tokenMetadata.isOperator;
 }
 
 function formatExpressionForDisplay(tokens) {
@@ -108,7 +108,7 @@ function resetOnNewInput() {
 }
 
 function evaluateExpression() {
-    if(isOperator) {
+    if(lastInputWasOperator) {
         updateDisplay('Error');
 
         return;
@@ -122,7 +122,7 @@ function evaluateExpression() {
     
     const finalResult = processByPrecedence(mainExpression);
     mainExpression = [finalResult.toString()];
-    isOperator = false;
+    lastInputWasOperator = false;
     isResultDisplayed = true;
     updateDisplay(finalResult.toString());
 }
@@ -134,14 +134,14 @@ function updateDisplay(data) {
 function clearAll() {
     updateDisplay('0');
     mainExpression = [];
-    isOperator = false;
+    lastInputWasOperator = false;
 }
 
 function handleOperatorInput(operator, expressionArray) {
     const initialChecker = isInitialSign(operator);
     let expressionLength = expressionArray.length;
 
-    if (isOperator && expressionLength) {
+    if (lastInputWasOperator && expressionLength) {
         if (!initialChecker && expressionLength == 1) {
 
             return false;
@@ -157,7 +157,7 @@ function handleOperatorInput(operator, expressionArray) {
         return false;
     }
 
-    isOperator = true;
+    lastInputWasOperator = true;
 
     return true;
 }
@@ -171,18 +171,18 @@ function handleNumberInput(number, expressionArray) {
 
     if (!expressionLength) {
         expressionArray.push(number);
-    } else if (!isOperator && expressionLength) {
+    } else if (!lastInputWasOperator && expressionLength) {
         appendDigit(expressionArray, number);
-    } else if (isOperator && expressionLength > 1) {
+    } else if (lastInputWasOperator && expressionLength > 1) {
         expressionArray.push(number);
-    } else if (isOperator && expressionLength === 1) {
+    } else if (lastInputWasOperator && expressionLength === 1) {
         appendDigit(expressionArray, number);
     } else {
 
         return false;
     }
 
-    isOperator = false;
+    lastInputWasOperator = false;
 
     return true;
 }
@@ -196,12 +196,12 @@ function processByPrecedence(expressionArray, precedenceLevel = 3) {
     let index = 0;
 
     while (index < expressionArray.length) {
-        let operatorInfo = identifyOperator(expressionArray[index]);
+        let tokenMetadata = getTokenMetadata(expressionArray[index]);
 
-        if ( (!operatorInfo[1]) || (operatorInfo[0] != precedenceLevel) ) {
+        if ( (!tokenMetadata.isOperator) || (tokenMetadata.precedence != precedenceLevel) ) {
             outputStack.push(expressionArray[index]);
             index += 1;
-        } else if ( (operatorInfo[1]) && (operatorInfo[0] == precedenceLevel) ) {
+        } else if ( (tokenMetadata.isOperator) && (tokenMetadata.precedence == precedenceLevel) ) {
             let partialResult =  calculate(expressionArray[index], outputStack.pop(), expressionArray[index + 1]);
             outputStack.push(partialResult);
             index += 2;
@@ -240,21 +240,18 @@ function calculate(operacion, a, b) {
     }
 }
 
-function identifyOperator(operator) {
-        switch(operator) {
-            case '**':
-            case '//':
-                return [3, true];
-
-            case 'x':
-            case '÷':
-                return [2, true];
-
-            case '+': 
-            case '-':
-                return [1, true];
-
-            default:
-                return [0, false];
+function getTokenMetadata(token) {
+    switch(token) {
+        case '**':
+        case '//':
+            return { precedence: 3, replaceable: false, isBlock: true , isOperator: true};
+        case 'x':
+        case '÷':
+            return { precedence: 2, replaceable: true, isBlock: false , isOperator: true};
+        case '+': 
+        case '-':
+            return { precedence: 1, replaceable: true, isBlock: false , isOperator: true};
+        default:
+            return { precedence: 0, replaceable: false, isBlock: false, isOperator: false };
     } 
 }
