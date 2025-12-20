@@ -1,9 +1,14 @@
 const resultMain = document.getElementById('result');
 const keypad = document.getElementById('keypad');
+const deleteBtn = document.getElementById('delete');
 
 let mainExpression = [];
 let lastInputWasOperator = false;
 let isResultDisplayed = false;
+
+deleteBtn.addEventListener('click', () => {
+    handleDeleteInput();
+});
 
 keypad.addEventListener('click', (event) => {
     const target = event.target;
@@ -29,10 +34,6 @@ keypad.addEventListener('click', (event) => {
         
         case 'equals':
             evaluateExpression();
-            break;
-
-        case 'delete':
-            handleDeleteInput();
             break;
     }
 });
@@ -69,10 +70,13 @@ function handleUserInput(value) {
 function handleDeleteInput() {
     if (mainExpression.length === 0) return;
 
-    let lastIndex = mainExpression.length - 1;
-    let lastElement = mainExpression[lastIndex];
+    const protectionMap = getBlockMap(mainExpression);
+    const lastIndex = mainExpression.length - 1;
+    const lastElement = mainExpression[lastIndex];
 
-    if (lastInputWasOperator) {
+    if (protectionMap[lastIndex]) {
+        mainExpression.splice(-2);
+    } else if (lastInputWasOperator) {
         mainExpression.pop();
     } else {
         if (lastElement.length === 1) {
@@ -82,16 +86,44 @@ function handleDeleteInput() {
         }
     }
 
-    if (!mainExpression.length) {
-        updateDisplay('0');
-    } else {
-        updateDisplay(formatExpressionForDisplay(mainExpression));
-    }
-    
-    lastIndex = mainExpression.length - 1;
-    let tokenMetadata = getTokenMetadata(mainExpression[lastIndex]);
+    syncStateAfterDelete();
+}
 
-    lastInputWasOperator = tokenMetadata.isOperator;
+function syncStateAfterDelete() {
+    if (!mainExpression.length) {
+        lastInputWasOperator = false;
+        updateDisplay('0');
+        return;
+    }
+
+    const lastToken = mainExpression[mainExpression.length - 1];
+    lastInputWasOperator = getTokenMetadata(lastToken).isOperator;
+    updateDisplay(formatExpressionForDisplay(mainExpression));
+}
+
+function getBlockMap(tokens) {
+    let protectionMap = [];
+    let index = 0;
+
+    while (index < tokens.length) {
+        switch (tokens[index]) {
+            case '**':
+                protectionMap.push(true, true);
+                index += 2;
+                break;
+            case '//':
+                protectionMap.pop();
+                protectionMap.push(true,true);
+                index += 1;
+                break;
+            default:
+                protectionMap.push(false);
+                index += 1;
+                break;
+        }
+    }
+
+    return protectionMap;
 }
 
 function formatExpressionForDisplay(tokens) {
